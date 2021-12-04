@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# Custom declared stuff
+*/.vs/*
+*/x64/*
+*.txt
+main.cpp
+
+#Visual studio stuff
+*.sln
+*.vcxproj
+*.vcxproj.*
