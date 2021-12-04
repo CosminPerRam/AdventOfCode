@@ -46,12 +46,12 @@ void d4p1()
 
 	unsigned drawnNumber = 0, wonTable = -1;
 
-	for(unsigned drawPosition = 0; wonTable == -1; drawPosition++){
+	for(unsigned drawPosition = 0; wonTable == -1; drawPosition++){ //process drawn numbers until a table has won
 		drawnNumber = drawnNumbers[drawPosition];
 
-		for (unsigned b = 0; b < boards.size() && wonTable == -1; b++) {
+		for (unsigned b = 0; b < boards.size() && wonTable == -1; b++) { //process all boards until a table has won
 			bool found = false;
-			for (unsigned i = 0; i < BOARD_SIZE && !found; i++) {
+			for (unsigned i = 0; i < BOARD_SIZE && !found; i++) { //check if there is a drawn number on the board (and stop after finding it)
 				for (int j = 0; j < BOARD_SIZE && !found; j++) {
 					if (boards[b][i][j] == drawnNumber)
 					{
@@ -61,9 +61,9 @@ void d4p1()
 				}
 			}
 
-			if (found) {
-				for (unsigned i = 0; i < BOARD_SIZE; i++) {
-					bool wonH = true, wonV = true;
+			if (found) { //check if the table has won only if a drawn number was seen
+				for (unsigned i = 0; i < BOARD_SIZE && wonTable == -1; i++) { //check boards until one has won (if)
+					bool wonH = true, wonV = true; //check horizontal AND vertical separately
 					for (int j = 0; j < BOARD_SIZE; j++) {
 						if (boards[b][i][j] != -1)
 							wonH = false;
@@ -71,10 +71,8 @@ void d4p1()
 							wonV = false;
 					}
 
-					if (wonH || wonV) {
+					if (wonH || wonV) //a table won
 						wonTable = b;
-						break;
-					}
 				}
 			}
 		}
@@ -88,7 +86,6 @@ void d4p1()
 		}
 	}
 
-	std::cout << sumUnmarked << " " << drawnNumber << std::endl;
 	std::cout << sumUnmarked * drawnNumber << std::endl;
 }
 
@@ -97,7 +94,6 @@ void d4p2()
 	getInput();
 
 	unsigned drawnNumber = 0, lastWonSum = 0;
-	std::vector<unsigned> wonTables;
 
 	for (unsigned drawPosition = 0; !boards.empty(); drawPosition++) {
 		drawnNumber = drawnNumbers[drawPosition];
@@ -113,9 +109,10 @@ void d4p2()
 					}
 				}
 			}
-
+			//^^^ the same as d4p1
 			if (found) {
-				for (unsigned i = 0; i < BOARD_SIZE; i++) {
+				bool aTableWon = false;
+				for (unsigned i = 0; i < BOARD_SIZE && !aTableWon; i++) {
 					bool wonH = true, wonV = true;
 					for (int j = 0; j < BOARD_SIZE; j++) {
 						if (boards[b][i][j] != -1)
@@ -125,6 +122,8 @@ void d4p2()
 					}
 
 					if (wonH || wonV) {
+						aTableWon = true;
+
 						if (boards.size() == 1) //last won board
 						{
 							lastWonSum = 0;
@@ -134,17 +133,14 @@ void d4p2()
 										lastWonSum += boards[0][i][j];
 								}
 							}
+							std::cout << lastWonSum * drawnNumber << std::endl;
 						}
 
 						boards.erase(boards.begin() + b);
 						b--;
-						break;
 					}
 				}
 			}
 		}
 	}
-
-	std::cout << lastWonSum << " " << drawnNumber << std::endl;
-	std::cout << lastWonSum * drawnNumber << std::endl;
 }
