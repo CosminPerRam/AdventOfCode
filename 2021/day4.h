@@ -133,6 +133,7 @@ void d4p2()
 										lastWonSum += boards[0][i][j];
 								}
 							}
+							
 							std::cout << lastWonSum * drawnNumber << std::endl;
 						}
 
