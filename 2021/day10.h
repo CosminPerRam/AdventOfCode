@@ -102,7 +102,7 @@ void d10p2() {
         }
     }
 
-    std::sort(scores.begin(), scores.end());
+    std::nth_element(scores.begin(), scores.begin() + scores.size() / 2, scores.end()); //thanks simondvt (reddit)
 
     std::cout << scores[scores.size() / 2] << std::endl;
 }
